@@ -1,0 +1,28 @@
+{
+  "name": "bridge",
+  "version": "0.0.1",
+  "description": "Signal server bridge for webrtc connections",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/foxql/bridge.git"
+  },
+  "keywords": [
+    "foxql"
+  ],
+  "author": "B. Erdinc Ozer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/foxql/bridge/issues"
+  },
+  "homepage": "https://github.com/foxql/bridge#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "http": "^0.0.1-security",
+    "socket.io": "^4.4.0"
+  }
+}

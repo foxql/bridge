@@ -37,7 +37,7 @@ module.exports = class {
     loadEvents(socket)
     {
         this.events.forEach(event => {   
-            socket.on(event.name, data => {event.listener(socket, this, data)});
+            socket.on(event.name, data => {event.listener(socket, data)});
         });
     }
 }

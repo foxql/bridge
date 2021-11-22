@@ -1,6 +1,6 @@
-async function listener(socket, network, data)
+async function listener(socket, data)
 {
-    
+   
 }
 
 module.exports = {

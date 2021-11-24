@@ -18,7 +18,8 @@ module.exports = class {
 
         this.connections[key] = {
             host: host,
-            create_time: new Date()
+            create_time: new Date(),
+            connection_count: 0
         }
 
         return key

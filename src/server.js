@@ -1,7 +1,8 @@
-module.exports = class {
+module.exports = class extends require('./utils/signalingServers'){
 
     constructor()
     {
+        super()
         this.app = require('express')()
         this.io = null
         this.server = null

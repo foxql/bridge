@@ -4,6 +4,7 @@ module.exports = class {
     constructor()
     {
         this.connections = {}
+        this.connectionsLength = 0
     }
 
     encrypt(data)
@@ -21,13 +22,14 @@ module.exports = class {
             create_time: new Date(),
             connection_count: 0
         }
-
+        this.connectionsLength++
         return key
     }
 
     remove(key)
     {
-        return delete this.connections[key]
+        delete this.connections[key]
+        this.connectionsLength--
     }
 
     exists(key)
@@ -35,6 +37,10 @@ module.exports = class {
         return this.connections[key] || false
     }
 
+    findAvailableServer()
+    {
+        return this.connections
+    }
 
 
 }

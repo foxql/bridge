@@ -5,6 +5,8 @@ module.exports = class {
     {
         this.connections = {}
         this.connectionsLength = 0
+        this.connectionKeysOneDimensionalArray = []
+        this.lastReturnedSignallingServer = '_NONE_'
     }
 
     encrypt(data)
@@ -19,10 +21,10 @@ module.exports = class {
 
         this.connections[key] = {
             host: host,
-            create_time: new Date(),
-            connection_count: 0
+            create_time: new Date()
         }
         this.connectionsLength++
+        this.connectionKeysOneDimensionalArray.push(key)
         return key
     }
 
@@ -39,7 +41,21 @@ module.exports = class {
 
     findAvailableServer()
     {
-        return this.connections
+        const lastServerKey = this.lastReturnedSignallingServer
+        const [targettingServerKey] = this.connectionKeysOneDimensionalArray.filter(key => {
+            if(lastServerKey !== key){
+                return true
+            }
+        })
+
+        const signallingServer = this.connections[targettingServerKey] || false
+
+        if(signallingServer) {
+            this.lastReturnedSignallingServer = targettingServerKey
+            return signallingServer
+        }
+
+        return false
     }
 
 

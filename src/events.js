@@ -1,5 +1,6 @@
 module.exports = [
     require('./events/register'),
     require('./events/transport'),
-    require('./events/disconnect')
+    require('./events/disconnect'),
+    require('./events/findSignallingServer')
 ]

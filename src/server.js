@@ -29,7 +29,6 @@ module.exports = class extends require('./utils/signalingServers'){
     initSocketConnection()
     {
         this.io.on('connection', socket => {
-            const {id} = socket
             this.loadEvents(socket);
         })
     }

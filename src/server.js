@@ -31,7 +31,6 @@ module.exports = class extends require('./utils/signalingServers'){
         this.io.on('connection', socket => {
             const {id} = socket
             this.loadEvents(socket);
-            console.log(id)
         })
     }
 

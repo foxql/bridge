@@ -1,10 +1,11 @@
-async function listener(socket, host)
+async function listener(socket, {protocol, port})
 {
-    const key = service.push(host)
+    const clientIpAddress = socket.conn.remoteAddress.split(':')[3]
+    const nodeIpAddress = `${protocol}://${clientIpAddress}:${port}`
+    const key = service.push(nodeIpAddress)
     if(typeof key !== 'string') {
         return false
     }
-
     socket.connectionKey = key
     socket.join('signall-area')
 }

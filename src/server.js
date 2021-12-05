@@ -14,12 +14,16 @@ module.exports = class extends require('./utils/signalingServers'){
         }
     }
 
-
     open()
     {
         const {port} = this.serverOptions
         this.server = require('http').createServer(this.app)
-        this.io = require('socket.io')(this.server)
+        this.io = require('socket.io')(this.server, {
+            cors: {
+                origin: "*",
+                methods: ["GET", "POST"]
+            }
+        })
 
         this.server.listen(port, ()=> {
             console.log('Bridge server is running...', port)

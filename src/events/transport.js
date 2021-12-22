@@ -2,12 +2,13 @@ const { v4: uuidv4 } = require('uuid')
 
 async function listener(socket, {livingTime, ...eventPackage})
 {
-    const {id} = socket
+    const {id, appName} = socket
     const poolingListenerName = uuidv4()
     service.io.to('signall-area').emit('transport', {
         package: eventPackage,
         bridgeBuyer: id,
-        poolingListenerName: poolingListenerName
+        poolingListenerName: poolingListenerName,
+        appName: appName
     })
 
     socket.on(poolingListenerName, (data)=> {
@@ -15,7 +16,9 @@ async function listener(socket, {livingTime, ...eventPackage})
     })
 
     setTimeout(()=> {
-        socket.off(poolingListenerName)
+        socket.off(poolingListenerName, (close)=> {
+            console.log(close)
+        })
     }, livingTime)
 
 

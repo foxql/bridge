@@ -1,3 +1,4 @@
+const sha256 = require("crypto-js/sha256")
 module.exports = class extends require('./utils/signalingServers'){
 
     constructor()
@@ -33,6 +34,10 @@ module.exports = class extends require('./utils/signalingServers'){
     initSocketConnection()
     {
         this.io.on('connection', socket => {
+            const {host: appName} = socket.request.headers;
+            socket.appName = sha256(
+                appName.split(':')[0]
+            ).toString();
             this.loadEvents(socket);
         })
     }

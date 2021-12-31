@@ -1,24 +1,27 @@
-const { v4: uuidv4 } = require('uuid')
-
-async function listener(socket, {livingTime, ...eventPackage})
+function livingTimeControl(time)
 {
+    if(typeof time !== 'number') return false
+
+    if(time > 2000) return false // 2 second
+
+    return true
+}
+
+async function listener(socket, {livingTime, temporaryListener, ...eventPackage})
+{
+    if(!livingTimeControl(livingTime)) return false
     const {id, appName} = socket
-    const poolingListenerName = uuidv4()
+    const bridgePoolingListenerName = transportResultPool.generate(id, temporaryListener)
+
     service.io.to('signall-area').emit('transport', {
-        package: eventPackage,
+        eventPackage: eventPackage,
         bridgeBuyer: id,
-        poolingListenerName: poolingListenerName,
+        bridgePoolingListener: bridgePoolingListenerName,
         appName: appName
     })
 
-    socket.on(poolingListenerName, (data)=> {
-        console.log(data)
-    })
-
     setTimeout(()=> {
-        socket.off(poolingListenerName, (close)=> {
-            console.log(close)
-        })
+        transportResultPool.destroy(bridgePoolingListenerName)
     }, livingTime)
 
 

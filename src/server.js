@@ -34,10 +34,13 @@ module.exports = class extends require('./utils/signalingServers'){
     initSocketConnection()
     {
         this.io.on('connection', socket => {
-            const {host: appName} = socket.request.headers;
-            socket.appName = sha256(
-                appName.split(':')[0]
+            const {origin} = socket.request.headers;
+            if(origin === undefined) return false
+
+            socket.appKey = sha256(
+                origin.split('://')[1]
             ).toString();
+            
             this.loadEvents(socket);
         })
     }

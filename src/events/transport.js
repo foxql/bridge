@@ -10,14 +10,14 @@ function livingTimeControl(time)
 async function listener(socket, {livingTime, temporaryListener, ...eventPackage})
 {
     if(!livingTimeControl(livingTime)) return false
-    const {id, appName} = socket
+    const {id, appKey} = socket
     const bridgePoolingListenerName = transportResultPool.generate(id, temporaryListener)
 
     service.io.to('signall-area').emit('transport', {
         eventPackage: eventPackage,
         bridgeBuyer: id,
         bridgePoolingListener: bridgePoolingListenerName,
-        appName: appName
+        appKey: appKey
     })
 
     setTimeout(()=> {

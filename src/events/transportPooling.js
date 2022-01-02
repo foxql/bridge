@@ -4,7 +4,6 @@ async function listener(socket, {bridgePoolingListener, nodeId})
     if(!targetPool) return false // pool not found or destroyed
 
     const {owner, temporaryListener} = targetPool
-
     service.io.to(owner).emit(temporaryListener, nodeId)
 
     // todo send result...

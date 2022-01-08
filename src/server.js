@@ -35,13 +35,14 @@ module.exports = class extends require('./utils/signalingServers'){
     {
         this.io.on('connection', socket => {
             const {origin} = socket.request.headers;
+
+            this.loadEvents(socket);
+
             if(origin === undefined) return false
 
             socket.appKey = sha256(
                 origin.split('://')[1]
             ).toString();
-            
-            this.loadEvents(socket);
         })
     }
 

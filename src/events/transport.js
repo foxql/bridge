@@ -7,19 +7,18 @@ function livingTimeControl(time)
     return true
 }
 
-async function listener(socket, {livingTime, temporaryListener, ...eventPackage})
+async function listener(socket, {livingTime, temporaryListener, powQuestion, ...eventPackage})
 {
     if(!livingTimeControl(livingTime)) return false
     const {id, appKey} = socket
     const bridgePoolingListenerName = transportResultPool.generate(id, temporaryListener)
-
     service.io.to('signall-area').emit('transport', {
         eventPackage: eventPackage,
         bridgeBuyer: id,
         bridgePoolingListener: bridgePoolingListenerName,
-        appKey: appKey
+        appKey: appKey,
+        powQuestion: powQuestion
     })
-
     setTimeout(()=> {
         transportResultPool.destroy(bridgePoolingListenerName)
     }, livingTime)

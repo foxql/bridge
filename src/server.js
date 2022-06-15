@@ -1,4 +1,5 @@
 const sha256 = require("crypto-js/sha256")
+const dappMap = require('./dappMap')
 module.exports = class extends require('./utils/signalingServers'){
 
     constructor()
@@ -8,7 +9,7 @@ module.exports = class extends require('./utils/signalingServers'){
         this.io = null
         this.server = null
         this.events = require('./events')
-
+        this.dapps = new dappMap()
         this.serverOptions = {
             port: process.env.PORT,
             host: '0.0.0.0'
@@ -40,9 +41,33 @@ module.exports = class extends require('./utils/signalingServers'){
 
             if(origin === undefined) return false
 
-            socket.appKey = sha256(
-                origin.split('://')[1]
-            ).toString();
+            socket.on('upgrade-dapp', ()=>{
+                socket.appKey = sha256(
+                    origin.split('://')[1]
+                ).toString();
+                this.dapps.connect(socket.appKey, origin)
+            })
+
+            socket.on('upgrade-explorer-connection', ()=> {
+                socket.join('explorer-connections')
+            })
+
+            socket.on('registered-signall-node-count', ()=> {
+                const signallNodes = this.io.sockets.adapter.rooms.get('signall-area') || false
+                if(!signallNodes) return false
+
+                this.io.to('explorer-connections').emit('registered-signall-node-count', signallNodes.size)
+            })
+
+            socket.on('disconnect', ()=>{
+                if(socket.appKey){
+                    this.dapps.disconnect(socket.appKey)
+                }
+            })
+
+            socket.on('active-dapps-stats', ()=>{
+                this.io.to('explorer-connections').emit('active-dapps-stats', this.dapps.getAll())
+            })
         })
     }
 

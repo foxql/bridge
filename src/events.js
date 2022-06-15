@@ -3,5 +3,6 @@ module.exports = [
     require('./events/transport'),
     require('./events/disconnect'),
     require('./events/findSignallingServer'),
-    require('./events/transportPooling')
+    require('./events/transportPooling'),
+    require('./events/lastPowEvents')
 ]

@@ -1,4 +1,4 @@
-async function listener(socket, {bridgePoolingListener, nodeAddress, candidateSignature})
+async function listener(socket, {bridgePoolingListener, nodeAddress, powQuestionAnswer})
 {
     const targetPool = transportResultPool.get(bridgePoolingListener)
     if(!targetPool) return false // pool not found or destroyed
@@ -6,10 +6,8 @@ async function listener(socket, {bridgePoolingListener, nodeAddress, candidateSi
     const {owner, temporaryListener} = targetPool
     service.io.to(owner).emit(temporaryListener, {
         nodeAddress,
-        candidateSignature
+        powQuestionAnswer
     })
-
-    // todo send result...
 }
 
 module.exports = {

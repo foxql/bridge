@@ -1,3 +1,4 @@
+const sha256 = require("crypto-js/sha256")
 module.exports = class {
 
     constructor()
@@ -24,16 +25,25 @@ module.exports = class {
 
     }
 
-    connect(hash, host)
+    connect(hash, host, alias)
     {
+        const hashedHost = sha256(host).toString()
         if(this.dapps[hash] == undefined){
             this.dapps[hash] = {
-                host: host,
-                webNodeCount: 0
+                webNodeCount: 0,
+                origins: {},
+                alias: alias
             }
             this.dappCount++
         }
-
+        if(this.dapps[hash]['origins'][hashedHost] === undefined) {
+            this.dapps[hash]['origins'][hashedHost] = {
+                nodeCount: 1,
+                host: host
+            }
+        }else{
+            this.dapps[hash]['origins'][hashedHost].nodeCount +=1
+        }
         this.dapps[hash].webNodeCount +=1
     }
 

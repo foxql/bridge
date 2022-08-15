@@ -39,13 +39,15 @@ module.exports = class extends require('./utils/signalingServers'){
 
             this.loadEvents(socket);
 
-            if(origin === undefined) return false
+            socket.on('upgrade-dapp', (dappAlias)=>{
 
-            socket.on('upgrade-dapp', ()=>{
+                if(typeof dappAlias != 'string') return false
+                if(dappAlias.length > 32 || dappAlias.length < 3) return false
+                const normalizeAlias = dappAlias.toLowerCase().trim()
                 socket.appKey = sha256(
-                    origin.split('://')[1]
-                ).toString();
-                this.dapps.connect(socket.appKey, origin)
+                    normalizeAlias
+                ).toString()
+                this.dapps.connect(socket.appKey, origin || 'undefined-origin', normalizeAlias)
             })
 
             socket.on('upgrade-explorer-connection', ()=> {

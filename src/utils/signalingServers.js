@@ -16,6 +16,7 @@ module.exports = class {
 
     push(host)
     {
+        if(typeof host != 'string') return false
         const key = this.encrypt(host)
         if(this.exists(key)) return false
 

@@ -42,17 +42,19 @@ module.exports = class {
     findAvailableServer()
     {
         const currentConnectionKeys = this.connectionKeysOneDimensionalArray
-        if(currentConnectionKeys.length === 1) {
+        console.log(currentConnectionKeys)
+        if(currentConnectionKeys.length == 1) {
             return this.connections[currentConnectionKeys[0]]
         }
 
         const lastServerKey = this.lastReturnedSignallingServer
+
         const [targettingServerKey] = currentConnectionKeys.filter(key => {
-            if(lastServerKey !== key){
+            if(lastServerKey != key){
                 return true
             }
         })
-
+        console.log(targettingServerKey)
         const signallingServer = this.connections[targettingServerKey] || false
 
         if(signallingServer) {

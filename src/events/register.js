@@ -1,8 +1,6 @@
-async function listener(socket, {protocol, port})
+async function listener(socket, host)
 {
-    const clientIpAddress = socket.conn.remoteAddress.split(':')[3]
-    const nodeIpAddress = `${protocol}://${clientIpAddress}:${port}`
-    const key = service.push(nodeIpAddress)
+    const key = service.push(host)
     if(typeof key !== 'string') {
         return false
     }

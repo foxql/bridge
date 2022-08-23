@@ -4,7 +4,7 @@ async function listener(socket, host)
 
     if(host.indexOf('localhost') > -1 || host.indexOf('127.0.0.1') > -1) return false
 
-    const key = service.push(host)
+    const key = service.changeOnlineStatus(host)
     socket.connectionKey = key
     socket.join('signall-area')
 }
